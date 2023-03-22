@@ -36,6 +36,9 @@ externalConfigSecretName: '{{ include "tempo.resourceName" (dict "ctx" . "compon
 # -- When 'useExternalConfig' is true, then changing 'externalConfigVersion' triggers restart of services - otherwise changes to the configuration cause a restart.
 externalConfigVersion: '0'
 
+# -- If true, Tempo will report anonymous usage data about the shape of a deployment to Grafana Labs
+reportingEnabled: true
+
 tempo:
   image:
     # -- The Docker registry
@@ -766,6 +769,9 @@ traces:
 # @default -- See values.yaml
 config: |
   multitenancy_enabled: {{ .Values.multitenancyEnabled }}
+
+  usage_report:
+    reporting_enabled: {{ .Values.reportingEnabled }}
 
   {{- if .Values.enterprise.enabled }}
   license:
@@ -1549,7 +1555,7 @@ enterprise:
     # -- Grafana Enterprise Metrics container image repository. Note: for Grafana Tempo use the value 'image.repository'
     repository: grafana/enterprise-traces
     # -- Grafana Enterprise Metrics container image tag. Note: for Grafana Tempo use the value 'image.tag'
-    tag: weekly-r58-94739e17
+    tag: v2.0.1
     # Note: pullPolicy and optional pullSecrets are set in toplevel 'image' section, not here
 
 # In order to use Grafana Enterprise Traces features, you will need to provide the contents of your Grafana Enterprise Traces
